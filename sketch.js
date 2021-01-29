@@ -4,7 +4,7 @@ let invisibleGround;
 let player, playerIMG;
 let NPC1,NPC1Image,NPC2Image,NPCGroup;
 let score = 0;
-let gameState, PLAY, END;
+let PLAY = 1,gameState = PLAY , END = 0;
 
 function preload()
 {
