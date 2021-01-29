@@ -3,6 +3,8 @@ let backgroundSPRITE;
 let invisibleGround;
 let player, playerIMG;
 let NPC1,NPC1Image,NPC2Image,NPCGroup;
+let score = 0;
+let gameState, PLAY, END;
 
 function preload()
 {
@@ -25,16 +27,8 @@ function setup()
 
      player = createSprite(100,380,20,50);
      player.addImage(playerIMG);
-    /*
-     NPC1 = createSprite(50, 380, 20, 50)
-     NPC1.addImage(NPC1Image);
-     NPC1.scale = 0.05;
 
-     NPC2 = createSprite(150, 380, 20, 50)
-     NPC2.addImage(NPC2Image);
-     NPC2.scale = 0.1;
-
-     */
+     gameState = PLAY;
 
      NPCGroup = new Group();
 
@@ -46,11 +40,17 @@ function draw()
 {
     background(100, 100, 50)
 
+
+    textSize(40)
+    text("Time Alive: "+ score, 1600,50);
+    
+    if(gameState === PLAY)
+    {
+        score = score + Math.round(frameCount/200);
+
     player.velocityY = player.velocityY+1; 
 
     player.collide(invisibleGround)
-
-    backgroundSPRITE.velocityX = -5
 
     if(keyDown("D"))
     {
@@ -69,13 +69,45 @@ function draw()
 
 
     backgroundSPRITE.velocityX = -5
+    SpawnNPC()
+    } else if(gameState === END)
+    {
+        backgroundSPRITE.velocityX = 0
+    }
+
+    if(keyDown("M")){
+        gameState = END;
+        backgroundSPRITE.velocityX = 0
+        NPCGroup.setVelocityXEach(0)
+        score = 0;
+    }
+
     drawSprites()
 }
 
 function SpawnNPC()
 {
-    if (frameCount % 100 === 0)
+    if (frameCount % 300 === 0)
     {
 
+        NPC = createSprite(1500, 740, 20, 50)
+        // //generate random monsters
+        var rand = Math.round(random(1,2));
+        switch(rand) {
+          case 1: NPC.addImage(NPC1Image);
+                  break;
+          case 2: NPC.addImage(NPC2Image);
+                  break;
+          default: break;
+        }
+       
+        //assign scale and lifetime to the NPC           
+        NPC.scale = 0.1;
+        NPC.lifetime = 300;
+        NPC.velocityX = -(2+ score/100)
+       
+       //adding NPCs to the group
+       NPCGroup.add(NPC);
+   
     }
 }
