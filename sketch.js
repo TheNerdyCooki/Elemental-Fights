@@ -70,6 +70,10 @@ function draw()
 
     backgroundSPRITE.velocityX = -5
     SpawnNPC()
+
+    if(NPCGroup.isTouching(player)){
+        gameState = END;
+    }
     } else if(gameState === END)
     {
         backgroundSPRITE.velocityX = 0
