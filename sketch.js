@@ -67,6 +67,9 @@ function draw()
         backgroundSPRITE.x = backgroundSPRITE.width/2;
       }
 
+         if(keyDown("F")){
+             player.velocityY = -10
+         }
 
     backgroundSPRITE.velocityX = -5
     SpawnNPC()
@@ -77,13 +80,13 @@ function draw()
     } else if(gameState === END)
     {
         backgroundSPRITE.velocityX = 0
+        score = 0;
+        NPCGroup.destroyEach();
+        player.velocityY = 0 
     }
 
-    if(keyDown("M")){
-        gameState = END;
-        backgroundSPRITE.velocityX = 0
-        NPCGroup.setVelocityXEach(0)
-        score = 0;
+    if(keyDown("R")){
+        gameState =  PLAY;
     }
 
     drawSprites()
