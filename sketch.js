@@ -6,6 +6,7 @@ let NPC1,NPC1Image,NPC2Image,NPCGroup;
 let score = 0;
 let PLAY = 1,gameState = PLAY , END = 0;
 let bullet, bulletIMG, bulletGroup;
+let waterBullet, waterBulletIMG, waterBulletGroup;
 
 function preload()
 {
@@ -13,7 +14,8 @@ function preload()
     playerIMG = loadImage("./Game NPC/Player (2).png")
     NPC1Image = loadImage("./Game NPC/Transparent PNG/idle/frame-1.png")
     NPC2Image = loadImage("./Game NPC/Transparent PNG/idleOTHER/frame-1.png")
-    bulletIMG = loadImage("./Game NPC/ fireblast.png")
+    bulletIMG = loadImage("./Game NPC/fireblast.png")
+    waterBulletIMG = loadImage("./Game NPC/waterblast.png")
 }
 
 function setup()
@@ -27,12 +29,14 @@ function setup()
     invisibleGround.visible = false;
 
 
-     player = createSprite(100,380,20,50);
+     player = createSprite(20,380,20,50);
      player.addImage(playerIMG);
 
      gameState = PLAY;
 
      NPCGroup = new Group();
+     bulletGroup = new Group();
+     waterBulletGroup = new Group();
 
     
 
@@ -49,6 +53,16 @@ function draw()
     if(gameState === PLAY)
     {
         score = score + Math.round(frameCount/200);
+
+        if (keyDown("Q")) {
+            createFireBullet();
+          }
+
+        if(keyDown("E"))
+        {
+            createWaterBullet();
+        }
+          
 
     player.velocityY = player.velocityY+1; 
 
@@ -76,6 +90,17 @@ function draw()
     backgroundSPRITE.velocityX = -5
     SpawnNPC()
 
+    if(bulletGroup.isTouching(NPCGroup) || waterBulletGroup.isTouching(NPCGroup))
+    {
+        bulletGroup.destroyEach();
+        NPCGroup.destroyEach();
+    }
+
+    if(bulletGroup.isTouching(player))
+    {
+        gameState = END;
+    }
+
     if(NPCGroup.isTouching(player)){
         gameState = END;
     }
@@ -85,6 +110,7 @@ function draw()
         score = 0;
         NPCGroup.destroyEach();
         player.velocityY = 0 
+        text("DONT TOUCH FIRE OR MONSTER", 300, 200)
     }
 
     if(keyDown("R")){
@@ -96,7 +122,7 @@ function draw()
 
 function SpawnNPC()
 {
-    if (frameCount % 300 === 0)
+    if (frameCount % 150 === 0)
     {
 
         NPC = createSprite(1500, 740, 20, 50)
@@ -120,3 +146,27 @@ function SpawnNPC()
    
     }
 }
+
+function createFireBullet() {
+    var bullet= createSprite(150, 100, 60, 10);
+    bullet.addImage(bulletIMG);
+    bullet.x = 360;
+    bullet.y=player.y;
+    bullet.velocityX = 5;
+    bullet.lifetime = 500;
+    bullet.scale = 0.09;
+    bulletGroup.add(bullet);
+    //return bullet;
+  }
+
+  function createWaterBullet() {
+    var waterBullet= createSprite(150, 100, 60, 10);
+    waterBullet.addImage(waterBulletIMG);
+    waterBullet.x = 360;
+    waterBullet.y=player.y;
+    waterBullet.velocityX = 5;
+    waterBullet.lifetime = 500;
+    waterBullet.scale = 0.5;
+    waterBulletGroup.add(waterBullet);
+    //return bullet;
+  }
