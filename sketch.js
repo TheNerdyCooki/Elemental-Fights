@@ -5,6 +5,7 @@ let player, playerIMG;
 let NPC1,NPC1Image,NPC2Image,NPCGroup;
 let score = 0;
 let PLAY = 1,gameState = PLAY , END = 0;
+let bullet, bulletIMG, bulletGroup;
 
 function preload()
 {
@@ -12,6 +13,7 @@ function preload()
     playerIMG = loadImage("./Game NPC/Player (2).png")
     NPC1Image = loadImage("./Game NPC/Transparent PNG/idle/frame-1.png")
     NPC2Image = loadImage("./Game NPC/Transparent PNG/idleOTHER/frame-1.png")
+    bulletIMG = loadImage("./Game NPC/ fireblast.png")
 }
 
 function setup()
